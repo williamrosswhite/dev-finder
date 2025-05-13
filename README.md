@@ -22,7 +22,8 @@ This is my learning project to learn React better, and to not let my existing sk
    - I'd like to implement like, location finders, school finders like on resumes
    - Should have to put country first, then automatically populate state vs province and phone prefix etc
 5. Then I'll need to shift storage and hosting to online, and make it able to easily switch between.
-5. Eventually I'll want to develop some sort of API potential employers can plug into.
+6. Eventually I'll want to develop some sort of API potential employers can plug into.
+7. Auto generate a resume based on inputs, possibly in various different styles
 
 
 ## Getting Started
