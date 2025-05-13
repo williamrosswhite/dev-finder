@@ -156,7 +156,7 @@ function ProfileForm() {
   return (
     <>
       <Script
-        url="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3LcKd3btb6Yf5xjc_NrXwjtnezEbOdLI&libraries=places&v=beta"
+        url={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places&v=beta`}
         attributes={{ async: true, defer: true }}
         onLoad={handleScriptLoad}
         onError={() => console.error("Failed to load Google Maps API.")}
