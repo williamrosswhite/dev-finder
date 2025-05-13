@@ -19,6 +19,8 @@ This is my learning project to learn React better, and to not let my existing sk
    - I'll need search discriminators, so users can populate with desired traits
    - I'll need some sort of idealizing algorithm to compare different elements to generate a ranking based on search parameters.
    - I'll want lazy loading.
+   - I'd like to implement like, location finders, school finders like on resumes
+   - Should have to put country first, then automatically populate state vs province and phone prefix etc
 5. Then I'll need to shift storage and hosting to online, and make it able to easily switch between.
 5. Eventually I'll want to develop some sort of API potential employers can plug into.
 
