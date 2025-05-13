@@ -69,9 +69,15 @@ function ProfileForm() {
     console.log("Google Maps API loaded successfully.");
   };
 
-  const handleInputChange = (e) => {
+  const handleStreetInputChange = (e) => {
     const value = e.target.value;
-    setInputValue(value);
+    setProfile(prev => ({
+      ...prev,
+      address: {
+        ...prev.address,
+        streetAddress: value,
+      },
+    }));
 
     if (googleLoaded && value) {
       const autocompleteService = new window.google.maps.places.AutocompleteService();
@@ -82,7 +88,6 @@ function ProfileForm() {
             setSuggestions(predictions);
           } else {
             setSuggestions([]);
-            console.error("Autocomplete error:", status);
           }
         }
       );
@@ -94,10 +99,31 @@ function ProfileForm() {
   const handleSuggestionSelect = (suggestion) => {
     setInputValue(suggestion.description);
     setSuggestions([]);
-    setProfile((prev) => ({
-      ...prev,
-      address: { ...prev.address, streetAddress: suggestion.description },
-    }));
+
+    // Use the PlacesService to get details
+    const service = new window.google.maps.places.PlacesService(document.createElement('div'));
+    service.getDetails({ placeId: suggestion.place_id }, (place, status) => {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+        // Helper to extract a component by type
+        const getComponent = (type, useShort = false) => {
+          const comp = place.address_components?.find(c => c.types.includes(type));
+          if (!comp) return "";
+          return useShort ? comp.short_name : comp.long_name;
+        };
+
+        setProfile(prev => ({
+          ...prev,
+          address: {
+            ...prev.address,
+            streetAddress: getComponent("street_number") + " " + getComponent("route"),
+            city: getComponent("locality") || getComponent("postal_town") || getComponent("sublocality"),
+            province: getComponent("administrative_area_level_1"),
+            postalCode: getComponent("postal_code"),
+            country: getComponent("country", true), // <-- use short_name for country
+          }
+        }));
+      }
+    });
   };
 
   const handleChange = (e) => {
@@ -301,10 +327,10 @@ function ProfileForm() {
                 <div style={{ flex: 1, position: "relative" }}>
                   <input
                     type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    placeholder="Search Address..."
-                    style={{ marginLeft: 4 }}
+                    name="streetAddress"
+                    value={profile.address.streetAddress}
+                    onChange={handleStreetInputChange}
+                    placeholder="Street Address"
                     readOnly={!isCountrySelected}
                     className={!isCountrySelected ? "readonly-field" : ""}
                   />
