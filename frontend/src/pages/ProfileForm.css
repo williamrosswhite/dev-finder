@@ -1,0 +1,18 @@
+.readonly-field {
+  background: #eee !important;
+  color: #888 !important;
+  border: 1px solid #ccc !important;
+}
+
+.autocomplete-dropdown-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
