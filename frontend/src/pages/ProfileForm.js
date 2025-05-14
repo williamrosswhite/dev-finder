@@ -4,7 +4,6 @@ import { IMaskInput } from "react-imask";
 import Script from "react-load-script";
 
 import { Salutation } from "../enums/Salutation";
-import { WorkStatus } from "../enums/WorkStatus";
 
 import { getCountryCallingCode } from 'libphonenumber-js';
 import countryList from "react-select-country-list";
@@ -165,9 +164,33 @@ function ProfileForm() {
 
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(profile);
+
+    const formData = new FormData();
+    formData.append("profile", JSON.stringify(profile));
+    if (selectedImage) {
+      formData.append("profileImage", selectedImage);
+    }
+
+    try {
+      const response = await fetch("https://localhost:7210/api/profile", {
+        method: "POST",
+        body: formData,
+        // Do NOT set Content-Type; browser will set it automatically for FormData
+      });
+
+      if (!response.ok) {
+        // Handle error
+        alert("Failed to save profile.");
+        return;
+      }
+
+      // Optionally handle success
+      alert("Profile saved!");
+    } catch (error) {
+      alert("An error occurred while saving the profile.");
+    }
   };
 
   const countryPrefix = profile.address.country
