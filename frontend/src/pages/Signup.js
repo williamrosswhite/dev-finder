@@ -1,43 +1,43 @@
 import React, { useState } from "react";
 
-function Login() {
+function Register() {
   const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userName, password }),
+        body: JSON.stringify({ userName, email, password }),
       });
       if (!response.ok) {
-        setError("Invalid credentials");
+        const data = await response.json();
+        setError(data?.message || "Registration failed");
         return;
       }
-      const data = await response.json();
-      // Store JWT token (for demo, use localStorage; consider security for production)
-      localStorage.setItem("token", data.token);
-      // Redirect or update UI as needed
-      window.location.href = "/";
+      setSuccess("Registration successful! You can now log in.");
     } catch (err) {
-      setError("Login failed");
+      setError("Registration failed");
     }
   };
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Username:</label>
+          <label>Email:</label>
           <input
-            type="text"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -51,10 +51,11 @@ function Login() {
           />
         </div>
         {error && <div style={{ color: "red" }}>{error}</div>}
-        <button type="submit">Login</button>
+        {success && <div style={{ color: "green" }}>{success}</div>}
+        <button type="submit">Sign Up</button>
       </form>
     </div>
   );
 }
 
-export default Login;
+export default Register;

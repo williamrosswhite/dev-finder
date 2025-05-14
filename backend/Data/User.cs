@@ -1,23 +1,13 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace DevFinder.Data
 {
-  [Table("User")]
-  public class User
-  {
-    [Key]
-    public int Id { get; set; }
-
-    [Required]
-    [EmailAddress]
-    [StringLength(100)]
-    public string Email { get; set; } = null!;
-
-    // Ultimately will need a more robust password system
-    // Use the built-in PasswordHasher<TUser> from Microsoft.AspNetCore.Identity for simplicity and security
-    [Required]
-    [StringLength(100)]
-    public string Password { get; set; } = null!;
-  }
+    // Inherit from IdentityUser<int> for ASP.NET Core Identity integration with int keys
+    public class User : IdentityUser<int>
+    {
+        // Add any custom properties below as needed.
+        // For example:
+        // public string? DisplayName { get; set; }
+        // public DateTime RegisteredAt { get; set; }
+    }
 }
