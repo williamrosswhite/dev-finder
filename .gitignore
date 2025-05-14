@@ -49,5 +49,5 @@ frontend/build/
 *.swp
 *.swo
 
-# Ignore local images bucket if you store images locally
-backend/Images/
+# Exclude uploads folder
+/uploads/
